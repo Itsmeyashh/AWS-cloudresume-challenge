@@ -1,9 +1,4 @@
 <!DOCTYPE HTML>
-<!--
-	Prologue by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>Portfolio</title>
@@ -11,10 +6,23 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="main.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+		<style>
+			#viewCount {
+				position: fixed;
+				top: 10px;
+				right: 10px;
+				background-color: #845757;
+				color: white;
+				padding: 5px 10px;
+				border-radius: 100px;
+			} 
+		</style>
 	</head>
 	<body class="is-preload">
-
-		<!-- Header -->
+		<div id="viewCount">
+			Views: <span id="count"></span>
+		</div>
+<!-- Header -->
 			<div id="header">
 
 				<div class="top">
@@ -30,6 +38,7 @@
 						<nav id="nav">
 							<ul>
 								<li><a href="#top" id="top-link"><span class="icon solid fa-home">Intro</span></a></li>
+								<li><a href="#Summary" id="top-link"><span class="icon solid fa-home">Professional Summary</span></a></li>
 								<li><a href="#Education" id="Education-link"><span class="icon solid fa-th">Education</span></a></li>
 								<li><a href="#Compitences" id="Compitences-link"><span class="icon solid fa-user">Compitences </span></a></li>
 								<li><a href="#Experience" id="Experience-link"><span class="icon solid fa-envelope">Experience</span></a></li>
@@ -63,19 +72,35 @@
 						<div class="container">
 
 							<header>
-								<p class="alt">Hi! I'm <strong>Yasasvi Maheswaram</strong>, a Devops/Cloud Engineer</a>
+								<p class="alt">Hi! I'm <strong>Yasasvi Maheswara</strong>, a Devops/Cloud Engineer</a>
 								</p>
 							</header>
 
 							<footer>
-								<a href="#Education" class="button scrolly">About me</a>
+								<a href="#Professional Summary" class="button scrolly">About me</a>
 							</footer>
 
 						</div>
 					</section>
 
-				<!-- Education -->
-					<section id="Education" class="two">
+				<!-- Summary -->
+					<section id="Professional Summary" class="three">
+						<div class="container">
+
+							<header>
+								<h2>Professional Summary </h2>
+							</header>
+						
+							<p><strong>As a Dedicated and results-driven DevOps engineer, I have accumulated three years of hands-on experience in automating and optimizing deployments across a vast infrastructure while streamlining IT operations. My proficiency with configuration management tools has allowed me to develop and maintain CI/CD pipelines seamlessly. Additionally, my expertise extends to various cloud platforms such as Amazon Web Services (AWS), as well as Azure; I am also highly proficient in utilizing various DevOps tools like Kubernetes, Docker, Ansible, and Terraform. Furthermore, I possess familiarity with an assortment of scripting and programming languages including Python, Bash, Shell. My extensive experience encompasses multiple Infrastructure roles involving Cloud Migration & Management alongside Server Monitoring & Support.</strong></p>
+							
+
+							
+
+						</div>
+					</section>
+
+					<!-- Education -->
+					<section id="Education" class="three">
 						<div class="container">
 
 							<header>
@@ -93,7 +118,7 @@
 					</section>
 
 				<!-- Compitences  -->
-					<section id="Compitences" class="three">
+					<section id="Compitences" class="four">
 						<div class="inner">
 
 							<h2>Skills and Competencies</h2>
@@ -210,14 +235,10 @@
 
 		<!-- Footer -->
 			<div id="footer">
-				<p>Number of Visits: <span id="visitsCount">Loading...</span></p>
-
-				<!-- Copyright -->
-					<ul class="References">
+				<ul class="References">
 						<p><h3>References Available on Request</h3></p>
 					</ul>
-
-			</div>
+				</div>
 
 		<!-- Scripts -->
 			<script src="jquery.min.js"></script>
@@ -228,29 +249,42 @@
 			<script src="util.js"></script>
 			<script src="main.js"></script>
 			<script>
+			
+			window.onload = function() {
+				incrementViewCount();
+			}
+			</script>
+			<script>
 				const lambdaApiUrl = 'https://eg5syym2iagc4v3m74s2an76va0bvjwm.lambda-url.us-east-1.on.aws/';
+				// Function to fetch the visitor count from Lambda and update the page
+			const fetchViewsCount = async () => {
+				try {
+					const response = await fetch(lambdaApiUrl);
 
-				const fetchViewsCount = async () => {
-        try {
-            const response = await fetch(lambdaApiUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+					// Check if the response is OK
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
 
-            const data = await response.json();
+					// Parse the response data
+					const data = await response.json();
 
-            if (data.hasOwnProperty('views')) {
-                const viewsCount = data.views;
-                document.getElementById('viewsCount').textContent = viewsCount;
-            } else {
-                throw new Error('Invalid response format. Missing "views" property.');
-            }
-        } catch (error) {
-            console.error('Error fetching or parsing views count:', error.message);
-        }
-    };
+					// Check if the 'visitor_count' exists in the response
+					if (data.hasOwnProperty('visitor_count')) {
+						const viewsCount = data.visitor_count;
+						document.getElementById('count').textContent = viewsCount;
+					} else {
+						throw new Error('Invalid response format. Missing "visitor_count" property.');
+					}
+				} catch (error) {
+					console.error('Error fetching or parsing views count:', error.message);
+				}
+			};
 
-    document.addEventListener('DOMContentLoaded', fetchViewsCount);
+			// Fetch the visitor count when the page is loaded
+			window.onload = fetchViewsCount;
+           
+
 			</script>
 
 	</body>
