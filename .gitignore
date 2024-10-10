@@ -1,6 +1,2 @@
-.infra/
-*.tfstate
-*.tfstate.*
-.terraform.lock.hcl
-
+infra/ 
 
