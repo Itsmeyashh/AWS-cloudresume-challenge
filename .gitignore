@@ -1,2 +1,6 @@
-infra/ # Ignores Terraform's working directory
+.infra/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
 
